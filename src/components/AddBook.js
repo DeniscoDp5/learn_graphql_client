@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 //apollo comonent
 import { graphql } from 'react-apollo'
-import { queryAuthors, addBook, queryBook } from '../query/query'
+import { queryAuthors, addBook, queryBooks, queryBook } from '../query/query'
 
 import _, { flowRight as compose } from 'lodash';
 
@@ -32,7 +32,14 @@ function AddBook(props) {
                 variables: {
                     name, genre, authorID
                 },
-                refetchQueries: [{ query: queryBook }]
+                refetchQueries: [{
+                    query: queryBooks
+                }, {
+                    query: queryBook,
+                    variables: {
+                        id: props.selected
+                    }
+                }]
             })
     }
 
@@ -55,7 +62,7 @@ function AddBook(props) {
                         {getAuthors()}
                     </select>
                 </div>
-                <button> Add Book</button>
+                <button className="button"> Add Book</button>
             </form>
         </div>
     )

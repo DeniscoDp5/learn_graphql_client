@@ -1,10 +1,10 @@
 import React from 'react'
 
-import { graphql } from 'react-apollo'
-import { queryBook } from '../query/query';
+import { graphql } from 'react-apollo';
+import { queryBooks } from '../query/query';
 
 
-export default graphql(queryBook)((props) => {
+export default graphql(queryBooks)((props) => {
     let a = true;
     console.log(props)
     const renderBooks = function () {
@@ -13,7 +13,7 @@ export default graphql(queryBook)((props) => {
             return <div> Loading Data....</div>
         } else {
             return props.data.books.map(book => (
-                <li key={book.id}>
+                <li key={book.id} onClick={(e) => props.setSelected(book.id)}>
                     {book.name}
                 </li>
             ))
@@ -25,8 +25,6 @@ export default graphql(queryBook)((props) => {
             <ul>
                 {renderBooks()}
             </ul>
-            <div>{a.toString()}</div>
-            <button onClick={(e) => { a = !a; console.log(a) }}>Change a</button>
         </div>
     )
 })
