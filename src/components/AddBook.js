@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 
 //apollo comonent
 import { graphql } from 'react-apollo'
-import { queryAuthors, addBook } from '../query/query'
+import { queryAuthors, addBook, queryBook } from '../query/query'
 
-import { flowRight as compose } from 'lodash';
+import _, { flowRight as compose } from 'lodash';
 
 function AddBook(props) {
     const [name, setName] = useState('');
@@ -26,11 +26,14 @@ function AddBook(props) {
 
     const onSubmit = (e) => {
         e.preventDefault()
-        props.addBook({
-            variables: {
-                name, genre, authorID
-            }
-        })
+
+        if (!(_.isEmpty(authorID) || _.isEmpty(genre) || _.isEmpty(name)))
+            props.addBook({
+                variables: {
+                    name, genre, authorID
+                },
+                refetchQueries: [{ query: queryBook }]
+            })
     }
 
     return (
